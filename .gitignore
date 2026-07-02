@@ -1,0 +1,27 @@
+# dependencies
+/node_modules
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# env / secrets  ── ¡NUNCA subir esto a git!
+.env
+.env.local
+.env*.local
+*.json.key
+bd-chatbot-n8n-*.json
+creotec-bot-sheets-*.json
+*.json
+
+
+# misc
+.DS_Store
+*.pem
+npm-debug.log*
+.vercel
+*.tsbuildinfo
+next-env.d.ts
