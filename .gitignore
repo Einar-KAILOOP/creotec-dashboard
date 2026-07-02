@@ -15,7 +15,6 @@
 *.json.key
 bd-chatbot-n8n-*.json
 creotec-bot-sheets-*.json
-*.json
 
 
 # misc
