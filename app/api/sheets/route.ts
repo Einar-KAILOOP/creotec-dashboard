@@ -35,9 +35,20 @@ const HEADERS = [
 
 export type RegistroServicio = Record<(typeof HEADERS)[number], string>;
 
+function cleanEnvValue(value: string | undefined): string | undefined {
+  if (!value) return value;
+  let cleaned = value.trim();
+  if (cleaned.startsWith('"') && cleaned.endsWith('"')) {
+    cleaned = cleaned.substring(1, cleaned.length - 1);
+  } else if (cleaned.startsWith("'") && cleaned.endsWith("'")) {
+    cleaned = cleaned.substring(1, cleaned.length - 1);
+  }
+  return cleaned;
+}
+
 function getAuth() {
-  let clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
-  let privateKey = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n");
+  let clientEmail = cleanEnvValue(process.env.GOOGLE_CLIENT_EMAIL);
+  let privateKey = cleanEnvValue(process.env.GOOGLE_PRIVATE_KEY)?.replace(/\\n/g, "\n");
 
   // Si no están definidas en las variables de entorno, buscamos automáticamente
   // un archivo JSON de cuenta de servicio de Google Cloud en la carpeta raíz del proyecto.
@@ -75,6 +86,7 @@ function getAuth() {
     scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
   });
 }
+
 
 export async function GET() {
   try {

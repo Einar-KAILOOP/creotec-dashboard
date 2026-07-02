@@ -2,9 +2,20 @@ import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
+function cleanEnvValue(value: string | undefined): string | undefined {
+  if (!value) return value;
+  let cleaned = value.trim();
+  if (cleaned.startsWith('"') && cleaned.endsWith('"')) {
+    cleaned = cleaned.substring(1, cleaned.length - 1);
+  } else if (cleaned.startsWith("'") && cleaned.endsWith("'")) {
+    cleaned = cleaned.substring(1, cleaned.length - 1);
+  }
+  return cleaned;
+}
+
 export async function POST() {
   try {
-    const webhookUrl = process.env.N8N_WEBHOOK_URL;
+    const webhookUrl = cleanEnvValue(process.env.N8N_WEBHOOK_URL);
     
     if (!webhookUrl) {
       return NextResponse.json(
@@ -15,6 +26,7 @@ export async function POST() {
         { status: 500 }
       );
     }
+
 
     // Enviamos una petición POST a n8n con metadatos útiles
     const response = await fetch(webhookUrl, {
